@@ -91,13 +91,15 @@ jobs:
           groups: testers
           file: android/app/build/outputs/apk/release/app-release.apk
       
-      # - name: Rename APK
-      #   run: mv ./android/app/build/outputs/apk/release/app-release.apk ./android/app/build/outputs/apk/release/LingoPractices.apk
+      - name: Rename APK
+        run: mv ./android/app/build/outputs/apk/release/app-release.apk ./android/app/build/outputs/apk/release/LingoPractices.apk
         
-      # ## Release APK in the releases folder in the GitHub
-      # - name: Release signed APK
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     token: ${{ secrets.GH_RELEASE_TOKEN }}
-      #     tag_name: ${{ env.TAG }}
-      #     files: android/app/build/outputs/apk/release/LingoPractices.apk
+      ## Release APK in the releases folder in the GitHub
+      - name: Release signed APK
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GH_RELEASE_TOKEN }}
+          tag_name: ${{ env.TAG }}
+          files: android/app/build/outputs/apk/release/LingoPractices.apk
+        env:
+          GITHUB_REPOSITORY: lingopractices/mobile
