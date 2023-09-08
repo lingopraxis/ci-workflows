@@ -1,0 +1,67 @@
+name: iOS Release Distribution
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [ios-release-dist]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-12
+    steps:
+      - name: Check out Git repository # clone the repo to local ci workspace
+        uses: actions/checkout@v3
+        with:
+          repository: lingopractices/mobile
+          token: ${{ secrets.MOBILE_PAT }}
+          ref: main
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "YARN_CACHE_DIR=$(yarn cache dir)" >> $GITHUB_ENV
+
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ env.YARN_CACHE_DIR }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Cache Pods dependencies
+        uses: actions/cache@v3
+        id: pods-cache
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Install Ruby 2.x
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7.6'
+          bundler-cache: true
+          working-directory: ios
+
+      - name: Installing dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Generating config files
+        run: yarn rnuc .env.production
+
+      - name: Install pods
+        run: pod install
+        working-directory: ios
+
+      - name: Run Fastlane build
+        working-directory: ios
+        run: bundle exec fastlane release
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPSTORE_API_KEY }}
