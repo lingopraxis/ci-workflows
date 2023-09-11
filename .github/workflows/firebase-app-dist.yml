@@ -98,7 +98,7 @@ jobs:
       - name: Release signed APK
         uses: softprops/action-gh-release@v1
         with:
-          token: ${{ secrets.GH_RELEASE_TOKEN }}
+          token: ${{ secrets.MOBILE_PAT }}
           tag_name: ${{ env.TAG }}
           files: android/app/build/outputs/apk/release/LingoPractices.apk
         env:
