@@ -1,4 +1,4 @@
-name: iOS Release Distribution
+name: Android Release Distribution
 
 on:
   workflow_dispatch:
