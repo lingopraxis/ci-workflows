@@ -71,18 +71,11 @@ jobs:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v3.x
 
-      - name: Define vars
-        id: vars # Needed to reuse at 'with: steps.vars.outputs'
-        shell: bash
-        run: |
-          # extract version from package.json
-          echo "TAG=$(node -p 'require("./package.json").version')" >> $GITHUB_ENV
-
       - name: Generating config files
         run: yarn rnuc .env.production
 
       - name: Run Fastlane build
-        working-directory: ios
+        working-directory: android
         run: bundle exec fastlane deploy
         env:
           PLAY_MARKET_API_PRIVATE_KEY: ${{ secrets.PLAY_MARKET_API_PRIVATE_KEY }}
