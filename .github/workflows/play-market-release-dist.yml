@@ -82,3 +82,4 @@ jobs:
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           ENV: production
           BUNDLE_ID: com.lingopractices
+          CI: true
