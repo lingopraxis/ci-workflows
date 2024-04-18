@@ -1,6 +1,6 @@
 name: Android Development Distribution and Maestro
 
-on: 
+on:
   workflow_dispatch:
   repository_dispatch:
     types: [firebase-app-dist]
@@ -18,12 +18,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: lingopractices/mobile
-          token: ${{ secrets.MOBILE_PAT }} 
+          token: ${{ secrets.MOBILE_PAT }}
 
       - name: Set up our JDK environment # setup JDK environment: mandatory as we need to build android project
         uses: actions/setup-java@v3
         with:
-          java-version: 11
+          java-version: 17
           distribution: 'zulu'
 
       - name: Get yarn cache directory path
@@ -56,7 +56,7 @@ jobs:
           key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-caches-
-      
+
       - name: Make Gradlew Executable
         run: cd android && chmod +x ./gradlew
 
@@ -90,10 +90,10 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.ANDROID_FIREBASE_CREDENTIALS }}
           groups: testers
           file: android/app/build/outputs/apk/release/app-release.apk
-      
+
       - name: Rename APK
         run: mv ./android/app/build/outputs/apk/release/app-release.apk ./android/app/build/outputs/apk/release/LingoPractices.apk
-        
+
       ## Release APK in the releases folder in the GitHub
       - name: Release signed APK
         uses: softprops/action-gh-release@v1

@@ -24,7 +24,7 @@ jobs:
       - name: Set up our JDK environment # setup JDK environment: mandatory as we need to build android project
         uses: actions/setup-java@v3
         with:
-          java-version: 11
+          java-version: 17
           distribution: 'zulu'
 
       - name: Get yarn cache directory path
@@ -57,7 +57,7 @@ jobs:
           key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-caches-
-      
+
       - name: Make Gradlew Executable
         run: cd android && chmod +x ./gradlew
 
