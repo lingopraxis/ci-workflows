@@ -57,11 +57,6 @@ jobs:
       - name: Install pods
         run: pod install
         working-directory: ios
-
-      - name: Update fastlane
-        run: |
-          gem update fastlane
-          fastlane --version
       
       - name: Run Fastlane build
         working-directory: ios
