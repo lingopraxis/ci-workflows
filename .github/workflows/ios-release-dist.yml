@@ -42,10 +42,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pods-
 
-      - name: Install Ruby 2.x
+      - name: Install Ruby 3.x
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7.6'
+          ruby-version: '3.2.4'
           bundler-cache: true
           working-directory: ios
 
