@@ -57,7 +57,7 @@ jobs:
       
       - name: Run Fastlane build
         working-directory: ios
-        run: ENVFILE=../env.staging bundle exec fastlane beta
+        run: bundle exec fastlane beta
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APPSTORE_API_KEY }}
